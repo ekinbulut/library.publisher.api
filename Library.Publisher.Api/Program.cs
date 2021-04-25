@@ -14,6 +14,7 @@ namespace Library.Publisher.Api
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
+                .UseUrls("http://*:8094")
                 .UseKestrel()
                 .UseIISIntegration()
                 .UseStartup<Startup>();

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.OpenApi.Models;
 using MongoDB.Driver;
 using Swashbuckle.AspNetCore.Swagger;
 
@@ -30,7 +31,8 @@ namespace Library.Publisher.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCors();
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc(x => x.EnableEndpointRouting = false);
+            
             AddSwagger(services);
             AddContext(services, Configuration);
             AddRepositories(services);
@@ -46,11 +48,11 @@ namespace Library.Publisher.Api
                 app.UseHsts();
 
             // global cors policy
-            app.UseCors(x => x
-                            .AllowAnyOrigin()
-                            .AllowAnyMethod()
-                            .AllowAnyHeader()
-                            .AllowCredentials());
+            // app.UseCors(x => x
+            //                 .AllowAnyOrigin()
+            //                 .AllowAnyMethod()
+            //                 .AllowAnyHeader()
+            //                 .AllowCredentials());
 
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();
@@ -69,7 +71,7 @@ namespace Library.Publisher.Api
         private void AddSwagger(IServiceCollection services)
         {
             // Register the Swagger generator, defining 1 or more Swagger documents
-            services.AddSwaggerGen(c => { c.SwaggerDoc(Version, new Info {Title = Title, Version = Version}); });
+            services.AddSwaggerGen(c => { c.SwaggerDoc(Version, new OpenApiInfo {Title = Title, Version = Version}); });
         }
         private void AddContext(IServiceCollection services, IConfiguration configuration)
         {
